@@ -8,6 +8,7 @@ import fnmatch
 import librosa
 import cv2
 import matplotlib.pyplot as plt
+import glob
 import os
 from tqdm import tqdm
 
@@ -93,7 +94,10 @@ class BadApple():
         filenames = [f'bad_apple_frame{i}.png' for i in range(1, frameCount+1)]
         frame = cv2.imread(os.path.join(self.frames_folder, filenames[0]))
         height, width, _ = frame.shape
-        video = cv2.VideoWriter(self.video_name, 0, 30, (width,height))
+        vid = cv2.VideoCapture(file)
+        fps = vid.get(cv2.CAP_PROP_FPS)
+        #print(fps)
+        video = cv2.VideoWriter(self.video_name, 0, fps, (width,height))
         
         print("Generating video...")
         for image in tqdm(filenames):
@@ -105,18 +109,18 @@ class BadApple():
     def play_video(self):
         print("""Playing video, you can quit with "q"... """)
         cap = cv2.VideoCapture(self.video_name)
-        cv2.namedWindow('BadApple on Sepctrogram')
+        cv2.namedWindow('Spectogram')
         frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         for _ in range(frames):
             ret_val, frame = cap.read()
-            cv2.imshow('BadApple on Sepctrogram', frame)
+            cv2.imshow('Spectogram', frame)
             if cv2.waitKey(1000//30) == 27:
                 break  # esc to quit
         cv2.destroyAllWindows()
     
     def handler(signum, frame):
         res = input("\n Manual interruption was detected. If frame generation is underaway it will continue where u left off next time but the latest frame may not be fully generated. Do you really want to exit? y/n.")
-        if res == 'y':
+        if res == 'y' or 'Y':
             exit(1)
 
     signal.signal(signal.SIGINT, handler)
@@ -127,8 +131,16 @@ if __name__=="__main__":
     print("1. Generate frames from the video.")
     print("2. Create spectrogram from generated frames.")
     val = int(input("Enter choice :"))
-    path_to_video = 'Touhou - Bad Apple.mp4' ##Change to whatever the mp4 file name is
-    GoodApple = BadApple(path_to_video, frames_folder='frames')
+
+    files = glob.glob('*.mp4')
+    count =0
+    for file in files:
+        count += 1
+    if (count>1): 
+        print("More than 1 mp4 file detected, check working directory to ensure only 1 mp4 file exists.")
+        exit(1)
+    print("Video Detected : "+file)
+    GoodApple = BadApple(file, frames_folder='frames')
   
 
     if (val ==1 ):
@@ -154,3 +166,4 @@ if __name__=="__main__":
         
     
     
+# %%

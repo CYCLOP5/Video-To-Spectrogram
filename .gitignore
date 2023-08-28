@@ -1,5 +1,6 @@
 frames
 .vscode
 output_video.avi
-Touhou - Bad Apple.mp4.sfk
+*.mp4
+
 env/
