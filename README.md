@@ -20,7 +20,7 @@
 <h3 align="center"Calculator for Team 2</h3>
 
   <p align="center">
-    Calculator (Python) for Team 2
+    Bad Apple But Its In A Spectrogram
     <br />
     <a href="https://github.com/CYCLOP5/Video-To-Spectrogram/wiki/Information-About-The-Project"><strong>Explore the docs »</strong></a>
     <br />
@@ -47,8 +47,7 @@
     </li>
     <li>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <a href="#prerequisites">Prerequisites</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -88,6 +87,14 @@ A program to convert videos into a spectrogram (currently only tested for bad ap
   ```sh
   python3 --version
   ```
+  
+* Required packages
+  ```sh
+  python -m venv env
+  . env/bin/activate
+  pip install -r requirements.txt
+  ``` 
+  
 
   
   
@@ -95,10 +102,6 @@ A program to convert videos into a spectrogram (currently only tested for bad ap
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
