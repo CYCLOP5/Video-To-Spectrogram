@@ -20,7 +20,7 @@
 <h3 align="center"Calculator for Team 2</h3>
 
   <p align="center">
-    Calculator (Python) for Team 2
+    Bad Apple But Its In A Spectrogram
     <br />
     <a href="https://github.com/CYCLOP5/Video-To-Spectrogram/wiki/Information-About-The-Project"><strong>Explore the docs »</strong></a>
     <br />
