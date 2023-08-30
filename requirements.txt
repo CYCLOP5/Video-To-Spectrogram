@@ -3,4 +3,5 @@ librosa
 opencv-python
 matplotlib
 tqdm
+pydub
 

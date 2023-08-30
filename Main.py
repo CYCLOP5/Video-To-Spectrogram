@@ -10,10 +10,16 @@ import cv2
 import matplotlib.pyplot as plt
 import glob
 import os
-from tqdm import tqdm
+from tqdm import tqdm   
 
 
-class BadApple():
+
+
+
+
+
+
+class Generator():
     def __init__(self, input_video_path, frames_folder):
         self.input_video_path = input_video_path
         self.frames_folder = frames_folder
@@ -87,18 +93,17 @@ class BadApple():
         plt.close(fig)
         
     def create_video(self):
-        self.video_name = 'output_video.avi'
+        self.video_name = 'Spectrogram.avi'
         framesFolder = 'frames'
         path = os.path.abspath(framesFolder)
         frameCount = len(fnmatch.filter(os.listdir(path), '*.*'))
-        filenames = [f'bad_apple_frame{i}.png' for i in range(1, frameCount+1)]
+        filenames = [f'frame{i}.png' for i in range(1, frameCount+1)]
         frame = cv2.imread(os.path.join(self.frames_folder, filenames[0]))
         height, width, _ = frame.shape
-        vid = cv2.VideoCapture(file)
+        vid = cv2.VideoCapture(thevideo)
         fps = vid.get(cv2.CAP_PROP_FPS)
         #print(fps)
         video = cv2.VideoWriter(self.video_name, 0, fps, (width,height))
-        
         print("Generating video...")
         for image in tqdm(filenames):
             video.write(cv2.imread(os.path.join(self.frames_folder, image)))
@@ -106,17 +111,32 @@ class BadApple():
         cv2.destroyAllWindows()
         video.release()
         
-    def play_video(self):
-        print("""Playing video, you can quit with "q"... """)
-        cap = cv2.VideoCapture(self.video_name)
-        cv2.namedWindow('Spectogram')
-        frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        for _ in range(frames):
-            ret_val, frame = cap.read()
-            cv2.imshow('Spectogram', frame)
-            if cv2.waitKey(1000//30) == 27:
-                break  # esc to quit
-        cv2.destroyAllWindows()
+    def add_audio(self):
+        cap = cv2.VideoCapture(locat)
+        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        end_time = round (frame_count / cap.get(cv2.CAP_PROP_FPS))
+
+        
+
+        print(end_time)
+
+
+
+
+
+
+        
+    #def play_video(self):
+     #   print("""Playing video, you can quit with "q"... """)
+      #  cap = cv2.VideoCapture(self.video_name)
+       # cv2.namedWindow('Spectogram')
+        #frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        #for _ in range(frames):
+         #   ret_val, frame = cap.read()
+          #  cv2.imshow('Spectogram', frame)
+           # if cv2.waitKey(1000//30) == 27:
+           #     break  # esc to quit
+        #cv2.destroyAllWindows()
     
     def handler(signum, frame):
         res = input("\n Manual interruption was detected. If frame generation is underaway it will continue where u left off next time but the latest frame may not be fully generated. Do you really want to exit? y/n.")
@@ -126,7 +146,7 @@ class BadApple():
     signal.signal(signal.SIGINT, handler)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     
     print("1. Generate frames from the video.")
     print("2. Create spectrogram from generated frames.")
@@ -134,28 +154,33 @@ if __name__=="__main__":
 
     files = glob.glob('*.mp4')
     count =0
-    for file in files:
+    for thevideo in files:
         count += 1
     if (count>1): 
-        print("More than 1 mp4 file detected, check working directory to ensure only 1 mp4 file exists.")
+        print("More than 1 mp4 file detected, recheck working directory to ensure only 1 mp4 file exists.")
         exit(1)
-    print("Video Detected : "+file)
-    GoodApple = BadApple(file, frames_folder='frames')
-  
+    print("Video Detected : "+thevideo)
+    
+    SpectroMaker = Generator(thevideo, frames_folder='frames')
+    
 
-    if (val ==1 ):
-        video_buf = GoodApple.load_video()
-        frequency_swipe = GoodApple.generate_frequency_swipe()
+    if (val == 1 ):
+        video_buf = SpectroMaker.load_video()
+        frequency_swipe = SpectroMaker.generate_frequency_swipe()
         framesFolder = 'frames'
         path = os.path.abspath(framesFolder)
         count = len(fnmatch.filter(os.listdir(path), '*.*'))
         
-        for i, frame in tqdm(enumerate(video_buf), total=GoodApple.frameCount-count):        
-            audio_frame = GoodApple.audio_from_frame(frame, frequency_swipe)
-            GoodApple.save_output_frame(audio_frame, f'bad_apple_frame{i+count}')
-    elif (val ==2 ):
-        GoodApple.create_video()
-        GoodApple.play_video()
+        for i, frame in tqdm(enumerate(video_buf), total=SpectroMaker.frameCount-count):        
+            audio_frame = SpectroMaker.audio_from_frame(frame, frequency_swipe)
+            SpectroMaker.save_output_frame(audio_frame, f'frame{i+count}')
+    elif (val == 2 ):
+        SpectroMaker.create_video()
+        #SpectroMaker.play_video()
+    elif (val == 3):
+        SpectrogramVideo = 'Spectrogram.avi'
+        locat = os.path.abspath(SpectrogramVideo)
+        SpectroMaker.add_audio()
     else:
         print("Error in choice, exiting....")
         exit(1)
