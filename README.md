@@ -20,7 +20,8 @@
 <h3 align="center"Calculator for Team 2</h3>
 
   <p align="center">
-    Bad Apple But Its In A Spectrogram
+    Converts Video to Spectrogram 
+    Original by Stsh4lson, added changes
     <br />
     <a href="https://github.com/CYCLOP5/Video-To-Spectrogram/wiki/Information-About-The-Project"><strong>Explore the docs »</strong></a>
     <br />
