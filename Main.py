@@ -11,6 +11,11 @@ import matplotlib.pyplot as plt
 import glob
 import os
 from tqdm import tqdm   
+import ffmpeg
+import shlex
+import subprocess
+from moviepy.editor import VideoFileClip, AudioFileClip
+
 
 
 
@@ -112,11 +117,23 @@ class Generator():
         video.release()
         
     def add_audio(self):
-        cap = cv2.VideoCapture(locat)
+        cap = cv2.VideoCapture(FinalLocation)
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         end_time = round (frame_count / cap.get(cv2.CAP_PROP_FPS))
+        start_time =0
+        og_clip = VideoFileClip(thevideo)
+        extracted_audio = AudioFileClip(thevideo).subclip(start_time, end_time)
+        final_video = VideoFileClip(FinalLocation)
+        final_video = final_video.set_audio(extracted_audio)
+        output_video_path = 'Final.mp4'
+        final_video.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
 
-        
+        og_clip.close()
+        final_video.close()
+        extracted_audio.close()
+
+        os.remove(FinalLocation)
+
 
         print(end_time)
 
@@ -152,15 +169,8 @@ if __name__ == "__main__":
     print("2. Create spectrogram from generated frames.")
     val = int(input("Enter choice :"))
 
-    files = glob.glob('*.mp4')
-    count =0
-    for thevideo in files:
-        count += 1
-    if (count>1): 
-        print("More than 1 mp4 file detected, recheck working directory to ensure only 1 mp4 file exists.")
-        exit(1)
-    print("Video Detected : "+thevideo)
-    
+    OGvid = "Input.mp4"
+    thevideo = os.path.abspath(OGvid)
     SpectroMaker = Generator(thevideo, frames_folder='frames')
     
 
@@ -173,13 +183,14 @@ if __name__ == "__main__":
         
         for i, frame in tqdm(enumerate(video_buf), total=SpectroMaker.frameCount-count):        
             audio_frame = SpectroMaker.audio_from_frame(frame, frequency_swipe)
-            SpectroMaker.save_output_frame(audio_frame, f'frame{i+count}')
+            SpectroMaker.save_output_frame(audio_frame, f'frame{i+count+1}')
     elif (val == 2 ):
         SpectroMaker.create_video()
         #SpectroMaker.play_video()
     elif (val == 3):
-        SpectrogramVideo = 'Spectrogram.avi'
-        locat = os.path.abspath(SpectrogramVideo)
+        subprocess.run(shlex.split('ffmpeg -y -i Spectrogram.avi -strict -2 ConvertedSpectrogram.mp4'))
+        SpectrogramVideo = 'ConvertedSpectrogram.mp4'
+        FinalLocation = os.path.abspath(SpectrogramVideo)
         SpectroMaker.add_audio()
     else:
         print("Error in choice, exiting....")
