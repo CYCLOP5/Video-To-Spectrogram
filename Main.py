@@ -8,7 +8,6 @@ import fnmatch
 import librosa
 import cv2
 import matplotlib.pyplot as plt
-import glob
 import os
 from tqdm import tqdm   
 import ffmpeg
@@ -17,22 +16,16 @@ import subprocess
 from moviepy.editor import VideoFileClip, AudioFileClip
 
 
-
-
-
-
-
-
-
 class Generator():
     def __init__(self, input_video_path, frames_folder):
         self.input_video_path = input_video_path
         self.frames_folder = frames_folder
         self.max_freq = 360
-        if os.path.exists(frames_folder):
-            print("Frames folder exists, continuing frame generation where last left off.") 
-        else:
-            os.mkdir(frames_folder)
+        if (val == 1):
+            if os.path.exists(frames_folder):
+                print("Frames folder exists, continuing frame generation where last left off.") 
+            else:
+                os.mkdir(frames_folder)
     
     def load_video(self):
         cap = cv2.VideoCapture(self.input_video_path)
@@ -43,8 +36,9 @@ class Generator():
         frameWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         frameHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         self.FinalFrameCount = cap.set(1, count)
-        print("Detected frames from last run: ", count)
-        print('Frames to generate:', self.frameCount-count)
+        if (val == 1) : 
+            print("Detected frames from last run: ", count)
+            print('Frames to generate:', self.frameCount-count)
 
         buf = np.empty(((self.frameCount-count), frameHeight, frameWidth, 3), np.dtype('uint8'))
 
@@ -60,7 +54,7 @@ class Generator():
     
     def generate_frequency_swipe(self):        
         frequencies = np.linspace(1, self.max_freq, self.max_freq).astype('int32')     
-        time = np.linspace(0, 1, self.max_freq*2) # 1 second with 2*max_freq sample rate        
+        time = np.linspace(0, 1, self.max_freq*2)       
         frequency_swipe = []
         for frequency in frequencies:
                 sine = np.sin(time*frequency*2*np.pi)
@@ -135,13 +129,7 @@ class Generator():
         os.remove(FinalLocation)
 
 
-        print(end_time)
-
-
-
-
-
-
+        #print(end_time)
         
     #def play_video(self):
      #   print("""Playing video, you can quit with "q"... """)
@@ -156,21 +144,32 @@ class Generator():
         #cv2.destroyAllWindows()
     
     def handler(signum, frame):
-        res = input("\n Manual interruption was detected. If frame generation is underaway it will continue where u left off next time but the latest frame may not be fully generated. Do you really want to exit? y/n.")
-        if res == 'y' or 'Y':
-            exit(1)
+        if (val == 1) :
+            res = input("\n Manual interruption was detected. If frame generation is underaway it will continue where u left off next time but the latest frame may not be fully generated. Do you really want to exit? \n y/n:")
+            if res == 'y' or 'Y':
+                exit(1)
+        elif (val == 2) :
+            res = input("\n Manual interruption was detected. Exiting will cause corrupted Spectrogram.avi \n y/n:")
+            if res == 'y' or 'Y':
+                exit(1)
+        else:
+            exit(0)
 
     signal.signal(signal.SIGINT, handler)
 
 
 if __name__ == "__main__":
-    
+    OGvid = "Input.mp4"
+    thevideo = os.path.abspath(OGvid)
+    checksum = os.path.isfile(thevideo)
+    if (checksum==False):
+        print("Input.mp4 not detected, make sure file is named 'Input.mp4'.")
+        exit(1)
     print("1. Generate frames from the video.")
     print("2. Create spectrogram from generated frames.")
     val = int(input("Enter choice :"))
 
-    OGvid = "Input.mp4"
-    thevideo = os.path.abspath(OGvid)
+    
     SpectroMaker = Generator(thevideo, frames_folder='frames')
     
 
@@ -186,20 +185,15 @@ if __name__ == "__main__":
             SpectroMaker.save_output_frame(audio_frame, f'frame{i+count+1}')
     elif (val == 2 ):
         SpectroMaker.create_video()
-        #SpectroMaker.play_video()
-    elif (val == 3):
         subprocess.run(shlex.split('ffmpeg -y -i Spectrogram.avi -strict -2 ConvertedSpectrogram.mp4'))
         SpectrogramVideo = 'ConvertedSpectrogram.mp4'
         FinalLocation = os.path.abspath(SpectrogramVideo)
         SpectroMaker.add_audio()
+        
     else:
         print("Error in choice, exiting....")
         exit(1)
-
-    
-    
-        
-        
+ 
     
     
 # %%
