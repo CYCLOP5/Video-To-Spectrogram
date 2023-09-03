@@ -1,6 +1,5 @@
 frames
 .vscode
-output_video.avi
 *.mp4
-
 env/
+*.avi
