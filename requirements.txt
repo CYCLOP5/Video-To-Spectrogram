@@ -3,4 +3,4 @@ librosa
 opencv-python
 matplotlib
 tqdm
-
+ffmpeg-python
