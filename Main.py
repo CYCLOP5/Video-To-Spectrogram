@@ -113,7 +113,7 @@ class Generator():
     def add_audio(self):
         cap = cv2.VideoCapture(FinalLocation)
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        end_time = round (frame_count / cap.get(cv2.CAP_PROP_FPS))
+        end_time = frame_count / cap.get(cv2.CAP_PROP_FPS)
         start_time =0
         og_clip = VideoFileClip(thevideo)
         extracted_audio = AudioFileClip(thevideo).subclip(start_time, end_time)
