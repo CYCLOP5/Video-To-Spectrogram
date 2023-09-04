@@ -1,0 +1,9 @@
+frames
+.vscode
+*.mp4
+<<<<<<< HEAD
+*.avi
+=======
+>>>>>>> ac8797f4923b5fb430545c5075ad2ef62341f1d6
+env/
+*.avi
