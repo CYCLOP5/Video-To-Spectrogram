@@ -21,7 +21,7 @@
 
   <p align="center">
     Converts Video to Spectrogram 
-    Original by Stsh4lson, added changes
+    
     <br />
     <a href="https://github.com/CYCLOP5/Video-To-Spectrogram/wiki/Information-About-The-Project"><strong>Explore the docs »</strong></a>
     <br />
