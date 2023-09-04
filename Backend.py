@@ -101,7 +101,6 @@ class Generator():
         height, width, _ = frame.shape
         vid = cv2.VideoCapture(thevideo)
         fps = vid.get(cv2.CAP_PROP_FPS)
-        #print(fps)
         video = cv2.VideoWriter(self.video_name, 0, fps, (width,height))
         print("Generating video...")
         for image in tqdm(filenames):
@@ -121,27 +120,11 @@ class Generator():
         final_video = final_video.set_audio(extracted_audio)
         output_video_path = 'Final.mp4'
         final_video.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
-
         og_clip.close()
         final_video.close()
         extracted_audio.close()
 
         os.remove(FinalLocation)
-
-
-        #print(end_time)
-        
-    #def play_video(self):
-     #   print("""Playing video, you can quit with "q"... """)
-      #  cap = cv2.VideoCapture(self.video_name)
-       # cv2.namedWindow('Spectogram')
-        #frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        #for _ in range(frames):
-         #   ret_val, frame = cap.read()
-          #  cv2.imshow('Spectogram', frame)
-           # if cv2.waitKey(1000//30) == 27:
-           #     break  # esc to quit
-        #cv2.destroyAllWindows()
     
     def handler(signum, frame):
         if (val == 1) :
@@ -156,6 +139,7 @@ class Generator():
             exit(0)
 
     signal.signal(signal.SIGINT, handler)
+
 
 
 if __name__ == "__main__":
