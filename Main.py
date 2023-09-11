@@ -14,31 +14,8 @@ import ffmpeg
 import shlex
 import subprocess
 from moviepy.editor import VideoFileClip, AudioFileClip
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QFileDialog
-from PyQt5 import uic
-
-fname = ""
-class UI(QMainWindow): 
-
-	def __init__(self):
-		super(UI, self).__init__()
-		uic.loadUi("dialog.ui", self)
-		self.button = self.findChild(QPushButton, "pushButton")
-		self.label = self.findChild(QLabel, "label")
-		self.button.clicked.connect(self.clicker)
-		self.show()
-
-	def clicker(self):
-        global fname
-		fname = QFileDialog.getOpenFileName(self, "Open File", "c:\\gui\\images", "All Files (*);; MP4 Files (*.mp4)" )
-		if fname:
-			self.label.setText(fname[0])
-
-
-# Initialize The App
-app = QApplication(sys.argv)
-UIWindow = UI()
-app.exec_()
+from PySide6 import QtWidgets
+from PySide6.QtUiTools import QUiLoader
 
 
 class Generator():
@@ -66,11 +43,14 @@ class Generator():
             print('Frames to generate:', self.frameCount-count)
 
         buf = np.empty(((self.frameCount-count), frameHeight, frameWidth, 3), np.dtype('uint8'))
+
         fc = 0
         ret = True
+
         while (fc < (self.frameCount-count)  and ret):
             ret, buf[fc] = cap.read()
-            fc += 1   
+            fc += 1
+            
         cap.release()
         return buf[..., 0]
     
@@ -123,10 +103,12 @@ class Generator():
         height, width, _ = frame.shape
         vid = cv2.VideoCapture(thevideo)
         fps = vid.get(cv2.CAP_PROP_FPS)
+        #print(fps)
         video = cv2.VideoWriter(self.video_name, 0, fps, (width,height))
         print("Generating video...")
         for image in tqdm(filenames):
             video.write(cv2.imread(os.path.join(self.frames_folder, image)))
+
         cv2.destroyAllWindows()
         video.release()
         
@@ -141,10 +123,27 @@ class Generator():
         final_video = final_video.set_audio(extracted_audio)
         output_video_path = 'Final.mp4'
         final_video.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
+
         og_clip.close()
         final_video.close()
         extracted_audio.close()
+
         os.remove(FinalLocation)
+
+
+        #print(end_time)
+        
+    #def play_video(self):
+     #   print("""Playing video, you can quit with "q"... """)
+      #  cap = cv2.VideoCapture(self.video_name)
+       # cv2.namedWindow('Spectogram')
+        #frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        #for _ in range(frames):
+         #   ret_val, frame = cap.read()
+          #  cv2.imshow('Spectogram', frame)
+           # if cv2.waitKey(1000//30) == 27:
+           #     break  # esc to quit
+        #cv2.destroyAllWindows()
     
     def handler(signum, frame):
         if (val == 1) :
@@ -171,7 +170,10 @@ if __name__ == "__main__":
     print("1. Generate frames from the video.")
     print("2. Create spectrogram from generated frames.")
     val = int(input("Enter choice :"))
-    SpectroMaker = Generator(fname, frames_folder='frames')
+
+    
+    SpectroMaker = Generator(thevideo, frames_folder='frames')
+    
 
     if (val == 1 ):
         video_buf = SpectroMaker.load_video()
@@ -194,6 +196,4 @@ if __name__ == "__main__":
         print("Error in choice, exiting....")
         exit(1)
  
-    
-
 # %%
