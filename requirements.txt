@@ -1,6 +1,6 @@
 numpy
 librosa
-opencv-python
+opencv-python-headless
 matplotlib
 tqdm
 ffmpeg-python
