@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/CYCLOP5/Video-To-Spectrogram">
-    <img src="![512x512bb](https://github.com/CYCLOP5/Video-To-Spectrogram/assets/85669579/767575d9-862c-4ecc-a26d-84e91d3a9c58)" alt="Logo" width="80" height="80">
+    <img src="https://is3-ssl.mzstatic.com/image/thumb/Purple114/v4/f8/0f/85/f80f8576-fead-09c9-a424-9505e8a8e7c8/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/512x512bb.jpg" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">A Video to Spectrogram Generator</h3>
@@ -197,5 +197,5 @@ Project Link: [https://github.com/CYCLOP5/Video-To-Spectrogram](https://github.c
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/vnjhaveri
 [product-screenshot]: images/screenshot.png
-[Python]: ![python-logo](https://github.com/CYCLOP5/Video-To-Spectrogram/assets/85669579/77c33e52-7eba-4e59-aab3-2af789ddc2ea)
+[Python]: ![python-logo](https://download.logo.wine/logo/Python_(programming_language)/Python_(programming_language)-Logo.wine.png)
 [Python-url]:https://www.python.org/
