@@ -20,7 +20,7 @@
 <h3 align="center">A Video to Spectrogram Generator</h3>
 
   <p align="center">
-    Program inputs an "Input.mp4" file and converts each frame into a spectrogram with amplitude charted and adds the original videos' audio back after frame merging. 
+    Program inputs an "Input.mp4" file and converts each frame into a spectrogram with amplitude charted and adds the original videos' audio back after frame merging. Inspired by Krystian Strzałka bad apple spectrogram.
     <br />
     <a href="https://github.com/CYCLOP5/Video-To-Spectrogram"><strong>Explore the docs »</strong></a>
     <br />
