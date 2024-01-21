@@ -14,6 +14,8 @@ import ffmpeg
 import shlex
 import subprocess
 from moviepy.editor import VideoFileClip, AudioFileClip
+import PySimpleGUI
+from gui import *
 
 
 class Generator():
@@ -159,7 +161,7 @@ class Generator():
 
 
 if __name__ == "__main__":
-    OGvid = "Input.mp4"
+    OGvid = values["video_input_location"]
     thevideo = os.path.abspath(OGvid)
     checksum = os.path.isfile(thevideo)
     if (checksum==False):

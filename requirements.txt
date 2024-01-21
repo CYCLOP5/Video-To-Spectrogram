@@ -5,3 +5,5 @@ matplotlib
 tqdm
 ffmpeg-python
 moviepy
+pysimplegui
+tk
