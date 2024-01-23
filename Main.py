@@ -15,7 +15,7 @@ import shlex
 import subprocess
 from moviepy.editor import VideoFileClip, AudioFileClip
 import PySimpleGUI
-from gui import *
+import gui
 
 
 class Generator():
@@ -161,7 +161,7 @@ class Generator():
 
 
 if __name__ == "__main__":
-    OGvid = values["video_input_location"]
+    OGvid = gui.values["video_input_location"]
     thevideo = os.path.abspath(OGvid)
     checksum = os.path.isfile(thevideo)
     if (checksum==False):
@@ -169,7 +169,7 @@ if __name__ == "__main__":
         exit(1)
     print("1. Generate frames from the video.")
     print("2. Create spectrogram from generated frames.")
-    val = int(input("Enter choice :"))
+    val = gui.value
 
     
     SpectroMaker = Generator(thevideo, frames_folder='frames')
