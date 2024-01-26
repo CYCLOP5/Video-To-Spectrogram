@@ -135,7 +135,7 @@ Python should be installed.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] GUI
+- [x] GUI
 
 
 See the [open issues](https://github.com/CYCLOP5/Video-To-Spectrogram/issues) for a full list of proposed features (and known issues).
